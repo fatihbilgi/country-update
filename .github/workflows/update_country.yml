@@ -1,0 +1,28 @@
+name: Update Contact Country
+
+on:
+  schedule:
+    - cron: '0 12 * * *'  # Her gün UTC 12:00'da çalışır, UTC+3'te 15:00 eder
+  workflow_dispatch:  # Manuel olarak çalıştırma desteği ekler
+
+jobs:
+  update-country:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repository'yi Klonla
+        uses: actions/checkout@v3
+
+      - name: Node.js Kurulumu
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Bağımlılıkları Yükle
+        run: npm install
+
+      - name: Çevresel Değişkenleri Tanımla
+        run: echo "BITRIX_URL=${{ secrets.BITRIX_URL }}" >> $GITHUB_ENV
+
+      - name: Scripti Çalıştır
+        run: node country.js
