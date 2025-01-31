@@ -2,7 +2,7 @@ name: Update Contact Country
 
 on:
   schedule:
-    - cron: '0 12 * * *'  # Her gün UTC 12:00'da çalışır, UTC+3'te 15:00 eder
+    - cron: '0 20 * * *'  # Her gün UTC 20:00'da çalışır, UTC+3'te 23:00 eder
   workflow_dispatch:  # Manuel olarak çalıştırma desteği ekler
 
 jobs:
