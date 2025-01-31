@@ -81,7 +81,7 @@ async function updateContactCountry(contactId, countryId) {
         });
 
         if (response.data.result) {
-            console.log(`Updated contact ${contactId} with country ID ${countryId}`);
+
         } else {
             console.error(`Failed to update contact ${contactId}`, response.data);
             console.log(`Failed to update contact ${contactId}`, response.data);
@@ -341,10 +341,11 @@ const countryNameMapping = {
     "YE": "Yemen",
     "ZM": "Zambia",
     "ZW": "Zimbabwe",
-    "AX": "Åland Islands",
+    "AX": "Åland Islands"
 };
 
 async function processContacts() {
+    let count = 0;
     const countryMap = await fetchCountryItems();
     const contacts = await fetchContacts();
 
@@ -352,20 +353,28 @@ async function processContacts() {
         const phoneNumber = contact.PHONE?.[0]?.VALUE;
         if (!phoneNumber) continue;
 
-        const parsedNumber = libphonenumber.parsePhoneNumber(phoneNumber);
-        if (!parsedNumber) continue;
+        try {
+            const parsedNumber = libphonenumber.parsePhoneNumber(phoneNumber);
+            if (!parsedNumber) throw new Error("Invalid phone number format");
 
-        const isoCountryCode = parsedNumber.country;
-        if (!isoCountryCode) continue;
+            const isoCountryCode = parsedNumber.country;
+            if (!isoCountryCode) throw new Error("Could not determine country code");
 
-        const countryName = countryNameMapping[isoCountryCode];
-        if (!countryName) continue;
+            const countryName = countryNameMapping[isoCountryCode];
+            if (!countryName) throw new Error(`No country name found for code: ${isoCountryCode}`);
 
-        const countryId = countryMap[countryName];
-        if (!countryId) continue;
+            const countryId = countryMap[countryName];
+            if (!countryId) throw new Error(`No country ID found for country: ${countryName}`);
 
-        await updateContactCountry(contact.ID, countryId);
+            await updateContactCountry(contact.ID, countryId);
+            count++;
+        } catch (error) {
+            console.error(`Skipping contact ID ${contact.ID} due to error: ${error.message}`);
+            console.log(`Invalid phone number: ${phoneNumber}`);
+        }
     }
+
+    console.log("Processed contacts count: ", count);
 }
 
 processContacts();
