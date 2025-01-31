@@ -16,6 +16,7 @@ async function fetchCountryItems() {
         return countryMap;
     } catch (error) {
         console.error("Error fetching country list:", error);
+        console.log("Error fetching country list:", error);
         return {};
     }
 }
@@ -67,6 +68,7 @@ async function fetchContacts() {
 
     } catch (error) {
         console.error("Error fetching contacts:", error);
+        console.log("Error fetching contacts:", error);
         return [];
     }
 }
@@ -82,9 +84,11 @@ async function updateContactCountry(contactId, countryId) {
             console.log(`Updated contact ${contactId} with country ID ${countryId}`);
         } else {
             console.error(`Failed to update contact ${contactId}`, response.data);
+            console.log(`Failed to update contact ${contactId}`, response.data);
         }
     } catch (error) {
         console.error(`Error updating contact ${contactId}:`, error);
+        console.log(`Error updating contact ${contactId}:`, error);
     }
 }
 
