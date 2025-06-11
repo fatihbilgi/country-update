@@ -42,7 +42,7 @@ async function fetchContacts() {
                 params: {
                     filter: {
                         ">=DATE_CREATE": "2025-04-01T00:00:00+03:00",
-                        "<DATE_CREATE": "2025-06-30T23:59:59+03:00",
+                        "<DATE_CREATE": "2025-04-30T23:59:59+03:00",
                         "PHONE": "%",
                         "=UF_CRM_1591879765": ""
                     },
