@@ -41,7 +41,7 @@ async function fetchContacts() {
             const response = await axios.get(`${process.env.BITRIX_URL}/crm.contact.list`, {
                 params: {
                     filter: {
-                        ">=DATE_CREATE": startDate,
+                        ">=DATE_CREATE": "2025-01-01T00:00:00",
                         "<DATE_CREATE": endDate,
                         "PHONE": "%",
                         "=UF_CRM_1591879765": ""
